@@ -1,25 +1,47 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const brownieFsCreate = require('../lib/index');
+const brownieFs = require('../lib/index');
 const imageWrite = require('etcher-image-write');
+const drivelist = require('drivelist');
 
 const imgTemplate = 'template.img';
 const imgOutput = 'output.img';
 const physicalDrive = '/dev/mmcblk0';
 
+let emitter = brownieFs.writeVideoPlayer(physicalDrive, 'example.mp4');
+
+emitter.on('progress', state => {
+	console.log(state.statusText);
+});
+
+/*
+drivelist.list((error, drives) => {
+  if (error) {
+    console.log(error);
+    throw error;
+  }
+
+  console.log(drives);
+});
+*/
+
+/*
+
 fs.copyFileSync(imgTemplate, imgOutput);
 
 // TODO: integrity check for template / copied template?
 
-// TODO: check space on local disk for template image copy
+// TODO: check space on local disk for template image copy + output image
 
 let files = [
 	'autostart_scripts/play_single_video.sh',
 	'example.mp4'
 ];
 
-brownieFsCreate.storeFilesInOutputImage(imgOutput, files);
+brownieFs.storeFilesInOutputImage(imgOutput, files);
+
+// TODO: check size of sdcard
 
 var emitter = imageWrite.write({
 	fd: fs.openSync('/dev/mmcblk0', 'rs+'), // '\\\\.\\PHYSICALDRIVE1' in Windows, for example.
@@ -44,3 +66,4 @@ emitter.on('done', (results) => {
 	console.log('Success!');
 });
 
+*/
